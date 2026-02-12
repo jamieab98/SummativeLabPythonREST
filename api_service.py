@@ -1,0 +1,1 @@
+url = f"https://world.openfoodfacts.org/api/v0/product/{barcode}.json"
