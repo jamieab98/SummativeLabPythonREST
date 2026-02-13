@@ -1,5 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+
 from inventory_data import inventory
+from api_service import fetchAPIData
 
 app = Flask(__name__)
 
@@ -22,4 +24,11 @@ def view_item(id):
     print(item)
     return jsonify(item), 200
 
-view_item(2)
+@app.route("/inventory", methods = ["POST"])
+def add_item():
+    item = request.get_json()
+    item_barcode = item["barcode"]
+    item_quantity = item["quantity"]
+    fetchAPIData(item_barcode)
+
+add_item()
