@@ -46,4 +46,3 @@ def add_item():
     inventory.append(new_item)
     return jsonify(new_item), 201
 
-add_item()
