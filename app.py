@@ -57,7 +57,7 @@ def add_item():
 def update_item(id):
     item = request.get_json()
     if not item:
-        return jsonify({"message":"item not found in the inventory"}), 400
+        return jsonify({"message":"item not found in the inventory"}), 404
     if id not in [i["id"] for i in inventory]:
         return jsonify({"message":"item not found in inventory"}), 404
     item_new_quantity = item.get("updated_quantity")
@@ -67,7 +67,7 @@ def update_item(id):
     if updated_item == None:
         return jsonify({"message": "item not found in the inventory"}), 404
     updated_item["quantity"] = item_new_quantity
-    return jsonify({"message":"successfully updated the inventory"}), 200
+    return jsonify({"message":"successfully updated the inventory","updated_item": updated_item}), 200
 
 #DELETE item
 @app.route("/inventory/<int:id>", methods = ["DELETE"])

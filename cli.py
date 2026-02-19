@@ -41,7 +41,13 @@ def main():
             print(f'ID:{i["id"]} | {i["product"]}: {i["quantity"]}')
     
     if args.command == "update":
-        print(f'now updating the quantity of the item with ID: {args.id} to {args.quantity}')
+        payload = {"updated_quantity":args.quantity}
+        response = requests.patch(f'{URL}/inventory/{args.id}', json=payload)
+        data = response.json()
+        if response.status_code == 404:
+            print(data["message"])
+        else:
+            print(f"successfully updated the quantity of {data['updated_item']['product_name']} to {data['updated_item']['quantity']}")
     
     if args.command == "delete":
         print(f'deleting the item with the ID: {args.id}')
