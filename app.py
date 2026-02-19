@@ -66,3 +66,14 @@ def update_item():
         return jsonify({"message": "item not found in the inventory"}), 404
     updated_item["quantity"] = item_new_quantity
     return jsonify({"message":"successfully updated the inventory"}), 200
+
+#DELETE item
+@app.route("/inventory/<int:id>", methods = ["DELETE"])
+def delete_item(id):
+    if id not in [i["id"] for i in inventory]:
+        return jsonify({"message":"item not found in inventory"}), 404
+    inventory[:] = [i for i in inventory if i["id"] != id]
+    print(inventory)
+    return jsonify({"message":"successfully deleted item from inventory"})
+
+delete_item(1)
