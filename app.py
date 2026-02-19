@@ -61,6 +61,8 @@ def update_item(id):
     if id not in [i["id"] for i in inventory]:
         return jsonify({"message":"item not found in inventory"}), 404
     item_new_quantity = item.get("updated_quantity")
+    if not isinstance(item_new_quantity, int):
+        return jsonify({"message":"quantity need to be an int"})
     updated_item = next((i for i in inventory if i["id"] == id), None)
     if updated_item == None:
         return jsonify({"message": "item not found in the inventory"}), 404
@@ -75,4 +77,3 @@ def delete_item(id):
     inventory[:] = [i for i in inventory if i["id"] != id]
     #print(inventory)
     return jsonify({"message":"successfully deleted item from inventory"})
-
