@@ -1,5 +1,7 @@
 import argparse
+import requests
 
+URL = "http://127.0.0.1:5000/"
 def main():
     parser = argparse.ArgumentParser(description = "Program to help user manage their inventory")
     
@@ -24,7 +26,13 @@ def main():
     args = parser.parse_args()
     
     if args.command == "add":
-        print(f'adding item with the barcode: {args.barcode} with a quantity of {args.quantity}.')
+        payload = {"barcode":args.barcode, "quantity":args.quantity}
+        response = requests.post(f'{URL}/inventory', json=payload)
+        data = response.json()
+        if response.status_code != 201:
+            print(data["message"])
+        else:
+            print(f'Successfully added {data["product_name"]}')
     
     if args.command == "view":
         print("now showing all items in the inventory")

@@ -77,3 +77,6 @@ def delete_item(id):
     inventory[:] = [i for i in inventory if i["id"] != id]
     #print(inventory)
     return jsonify({"message":"successfully deleted item from inventory"})
+
+if __name__ == "__main__":
+    app.run()
