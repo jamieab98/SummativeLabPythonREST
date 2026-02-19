@@ -35,7 +35,10 @@ def main():
             print(f'Successfully added {data["product_name"]}')
     
     if args.command == "view":
-        print("now showing all items in the inventory")
+        response = requests.get(f'{URL}/inventory')
+        data = response.json()
+        for i in data:
+            print(f'ID:{i["id"]} | {i["product"]}: {i["quantity"]}')
     
     if args.command == "update":
         print(f'now updating the quantity of the item with ID: {args.id} to {args.quantity}')

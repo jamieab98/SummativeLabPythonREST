@@ -14,7 +14,7 @@ def default():
 def view_inventory():
     response = []
     for item in inventory:
-        response.append({"product": item['product_name'], "quantity": item['quantity']})
+        response.append({"product": item['product_name'], "quantity": item['quantity'], "id": item['id']})
         #print(f"Product: {item['product_name']}")
         #print(f"Quantity: {item['quantity']}")
     return jsonify(response), 200
