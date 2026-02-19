@@ -9,6 +9,7 @@ app = Flask(__name__)
 def default():
     return "Welcome to the inventory!"
 
+#GET all items
 @app.route("/inventory")
 def view_inventory():
     response = []
@@ -18,12 +19,14 @@ def view_inventory():
         print(f"Quantity: {item['quantity']}")
     return jsonify(response), 200
 
+#GET specific item
 @app.route("/inventory/<int:id>")
 def view_item(id):
     item = next((i for i in inventory if i['id'] == id), None)
     print(item)
     return jsonify(item), 200
 
+#POST new item
 @app.route("/inventory", methods = ["POST"])
 def add_item():
     item = request.get_json()
@@ -46,3 +49,20 @@ def add_item():
     inventory.append(new_item)
     return jsonify(new_item), 201
 
+#PATCH update item
+@app.route("/inventory", methods = ["PATCH"])
+def update_item():
+    item = request.get_json()
+    if not item:
+        return jsonify({"message":"item not found in the inventory"}), 400
+    item_id = item.get("id", None)
+    if item_id == None:
+        return jsonify({"message":"item not found in the inventory"}), 400
+    if not isinstance (item.get("updated_quantity"), int):
+        return jsonify({"message":"quantity needs to be an integer"}), 400
+    item_new_quantity = item.get("updated_quantity")
+    updated_item = next((i for i in inventory if item_id == i["id"]), None)
+    if updated_item == None:
+        return jsonify({"message": "item not found in the inventory"}), 404
+    updated_item["quantity"] = item_new_quantity
+    return jsonify({"message":"successfully updated the inventory"}), 200
