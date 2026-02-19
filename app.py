@@ -15,15 +15,15 @@ def view_inventory():
     response = []
     for item in inventory:
         response.append({"product": item['product_name'], "quantity": item['quantity']})
-        print(f"Product: {item['product_name']}")
-        print(f"Quantity: {item['quantity']}")
+        #print(f"Product: {item['product_name']}")
+        #print(f"Quantity: {item['quantity']}")
     return jsonify(response), 200
 
 #GET specific item
 @app.route("/inventory/<int:id>")
 def view_item(id):
     item = next((i for i in inventory if i['id'] == id), None)
-    print(item)
+    #print(item)
     return jsonify(item), 200
 
 #POST new item
@@ -47,6 +47,7 @@ def add_item():
     next_id = max((i["id"] for i in inventory), default = 0) + 1
     new_item = {"product_name": item_name, "quantity": item_quantity, "barcode_number": item_barcode, "category": item_category, "brand": item_brand, "id": next_id}
     inventory.append(new_item)
+    #print(new_item)
     return jsonify(new_item), 201
 
 #PATCH update item
@@ -73,5 +74,6 @@ def delete_item(id):
     if id not in [i["id"] for i in inventory]:
         return jsonify({"message":"item not found in inventory"}), 404
     inventory[:] = [i for i in inventory if i["id"] != id]
-    print(inventory)
+    #print(inventory)
     return jsonify({"message":"successfully deleted item from inventory"})
+
