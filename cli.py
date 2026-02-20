@@ -1,5 +1,6 @@
 import argparse
 import requests
+from api_service import fetchAPIData
 
 URL = "http://127.0.0.1:5000/"
 def main():
@@ -60,7 +61,13 @@ def main():
                 print(f"ID:{i['id']} | {i['product_name']}: {i['quantity']}")
     
     if args.command == "search":
-        print(f'searching item with the barcode : {args.barcode}')
+        data = fetchAPIData(args.barcode)
+        if data["status_verbose"] != "product found":
+            print("Product does not exist")
+        else:
+            product_name = data["product"]["product_name"]
+            print(product_name)
+        #print(f'searching item with the barcode : {args.barcode}')
 
 if __name__ == "__main__":
     main()
