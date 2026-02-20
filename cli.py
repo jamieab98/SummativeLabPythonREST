@@ -50,7 +50,14 @@ def main():
             print(f"successfully updated the quantity of {data['updated_item']['product_name']} to {data['updated_item']['quantity']}")
     
     if args.command == "delete":
-        print(f'deleting the item with the ID: {args.id}')
+        response = requests.delete(f"{URL}/inventory/{args.id}")
+        data = response.json()
+        if response.status_code == 404:
+            print(data["message"])
+        else:
+            print(data["message"])
+            for i in data["updated_inventory"]:
+                print(f"ID:{i['id']} | {i['product_name']}: {i['quantity']}")
     
     if args.command == "search":
         print(f'searching item with the barcode : {args.barcode}')
